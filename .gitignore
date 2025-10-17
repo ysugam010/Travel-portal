@@ -29,4 +29,6 @@ dist-ssr
 # Cache
 .cache/
 .next/
+
+
 src/assets/
