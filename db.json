@@ -1,0 +1,224 @@
+{
+  "hostelry": [
+    {
+      "id": "1",
+      "name": "The Grand Bali Resort",
+      "location": "Nusa Dua, Bali",
+      "price_per_night": 1500,
+      "rating": 4.8,
+      "amenities": [
+        "Pool",
+        "Spa",
+        "Free WiFi",
+        "Beachfront"
+      ],
+      "image": "grand-bali.jpg"
+    },
+    {
+      "id": "2",
+      "name": "Ubud Valley Villa",
+      "location": "Ubud, Bali",
+      "price_per_night": 2200,
+      "rating": 4.9,
+      "amenities": [
+        "Private Pool",
+        "Jungle View",
+        "Yoga Deck"
+      ],
+      "image": "ubud-villa.jpg"
+    },
+    {
+      "id": "3",
+      "name": "Seminyak Beach Hotel",
+      "location": "Seminyak, Bali",
+      "price_per_night": 1800,
+      "rating": 4.7,
+      "amenities": [
+        "Rooftop Bar",
+        "Infinity Pool",
+        "Ocean View"
+      ],
+      "image": "seminyak-beach.jpg"
+    },
+    {
+      "id": "4",
+      "name": "Canggu Surf & Stay",
+      "location": "Canggu, Bali",
+      "price_per_night": 1200,
+      "rating": 4.6,
+      "amenities": [
+        "Surf School",
+        "Coworking Space",
+        "Cafe"
+      ],
+      "image": "canggu-surf.jpg"
+    }
+  ],
+  "flights": [
+    {
+      "id": "101",
+      "airline": "IndiGo",
+      "airline_logo": "indigo.png",
+      "flight_number": "6E 204",
+      "origin": "New Delhi",
+      "origin_code": "DEL",
+      "destination": "Mumbai",
+      "destination_code": "BOM",
+      "departure_time": "2025-10-20T08:30:00",
+      "arrival_time": "2025-10-20T10:45:00",
+      "duration": "2h 15m",
+      "price": 7500,
+      "stops": 0
+    },
+    {
+      "id": "102",
+      "airline": "Vistara",
+      "airline_logo": "vistara.png",
+      "flight_number": "UK 944",
+      "origin": "New Delhi",
+      "origin_code": "DEL",
+      "destination": "Mumbai",
+      "destination_code": "BOM",
+      "departure_time": "2025-10-20T11:00:00",
+      "arrival_time": "2025-10-20T13:10:00",
+      "duration": "2h 10m",
+      "price": 8200,
+      "stops": 0
+    },
+    {
+      "id": "103",
+      "airline": "Air India",
+      "airline_logo": "air-india.png",
+      "flight_number": "AI 805",
+      "origin": "New Delhi",
+      "origin_code": "DEL",
+      "destination": "Bengaluru",
+      "destination_code": "BLR",
+      "departure_time": "2025-10-22T14:00:00",
+      "arrival_time": "2025-10-22T16:45:00",
+      "duration": "2h 45m",
+      "price": 9100,
+      "stops": 0
+    },
+    {
+      "id": "105",
+      "airline": "Emirates",
+      "airline_logo": "emirates.png",
+      "flight_number": "EK 511",
+      "origin": "New Delhi",
+      "origin_code": "DEL",
+      "destination": "Dubai",
+      "destination_code": "DXB",
+      "departure_time": "2025-10-25T10:35:00",
+      "arrival_time": "2025-10-25T13:00:00",
+      "duration": "4h 25m",
+      "price": 18500,
+      "stops": 0
+    }
+  ],
+  "packages": [
+    {
+      "id": "p1",
+      "slug": "amalfi",
+      "name": "Amalfi Coast Escape – 3N / 4D",
+      "location": "Amalfi",
+      "price": 48000,
+      "rating": 4.9,
+      "nights": 3,
+      "itinerary": [
+        "Arrive & check-in, evening stroll in Positano",
+        "Boat tour to Capri & Blue Grotto",
+        "Visit Amalfi town, Ravello gardens, cooking class",
+        "Check-out & depart"
+      ],
+      "images": [
+        "/assets/24.jpg",
+        "/assets/27.jpg"
+      ]
+    },
+    {
+      "id": "p2",
+      "slug": "santorini",
+      "name": "Santorini Signature – 3N / 4D",
+      "location": "Santorini",
+      "price": 56000,
+      "rating": 4.8,
+      "nights": 3,
+      "itinerary": [
+        "Sunset Oia & wine-tasting",
+        "Volcano cruise & hot springs",
+        "Explore Fira & archaeological sites",
+        "Departure"
+      ],
+      "images": [
+        "/assets/25.jpg"
+      ]
+    },
+    {
+      "id": "p3",
+      "slug": "fjords",
+      "name": "Norwegian Fjords Adventure – 3N / 4D",
+      "location": "Fjords",
+      "price": 62000,
+      "rating": 4.85,
+      "nights": 3,
+      "itinerary": [
+        "Oslo arrival, scenic rail to Bergen",
+        "Fjord cruise & waterfall walks",
+        "Kayaking & village visits",
+        "Return to Oslo"
+      ],
+      "images": [
+        "/assets/26.jpg"
+      ]
+    }
+  ],
+  "users": [
+    {
+      "id": "1",
+      "name": "Sugam",
+      "email": "sugam010@gmail.com",
+      "password": "123"
+    },
+    {
+      "id": "6727",
+      "name": "anish",
+      "email": "anish@gmail.com",
+      "password": "1234"
+    },
+    {
+      "id": "2f9c",
+      "name": "vinayak",
+      "email": "vinayak@gmial.com",
+      "password": "1234"
+    },
+    {
+      "id": "b6ba",
+      "name": "yash",
+      "email": "yash@gmail.com",
+      "password": "1234"
+    },
+    {
+      "id": "8434",
+      "name": "tarun",
+      "email": "tarun@gmail.com",
+      "password": "123"
+    },
+    {
+      "id": "44a8",
+      "name": "anuj",
+      "email": "anuj@gmail.com",
+      "password": "1234"
+    }
+  ],
+  "bookings": [
+    {
+      "id": "1",
+      "userEmail": "user@example.com",
+      "type": "Hotel",
+      "name": "The Grand Bali Resort",
+      "location": "Nusa Dua, Bali",
+      "bookingDate": "2025-09-15"
+    }
+  ]
+}
