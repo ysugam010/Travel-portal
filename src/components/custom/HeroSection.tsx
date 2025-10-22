@@ -78,21 +78,33 @@ export function HeroSection() {
 
   // --- Handle Search ---
   const handleHostelrySearch = () => {
-    if (!destination) {
-      alert('Please enter a destination.');
-      return;
-    }
-    localStorage.setItem('tripco-last-search', destination);
-    setLastSearch(destination);
-    const query = new URLSearchParams({
-      destination,
-      rooms: rooms.toString(),
-      guests: guests.toString(),
-      checkIn: checkInDate ? checkInDate.toISOString() : '',
-      checkOut: checkOutDate ? checkOutDate.toISOString() : ''
-    }).toString();
-    navigate(`/hostelry-results?${query}`);
-  };
+  if (!destination) {
+    alert('Please enter a destination.');
+    return;
+  }
+  if (!checkInDate) {
+    alert('Please select a check-in date.');
+    return;
+  }
+  if (!checkOutDate) {
+    alert('Please select a check-out date.');
+    return;
+  }
+
+  localStorage.setItem('tripco-last-search', destination);
+  setLastSearch(destination);
+
+  const query = new URLSearchParams({
+    destination,
+    rooms: rooms.toString(),
+    guests: guests.toString(),
+    checkIn: checkInDate.toISOString(),
+    checkOut: checkOutDate.toISOString(),
+  }).toString();
+
+  navigate(`/hostelry-results?${query}`);
+};
+
 
   const handleFlightSearch = () => {
     if (!from || !to) {
@@ -127,6 +139,18 @@ export function HeroSection() {
 
     navigate(`/package-results?${queryParams}`);
   };
+
+// Flights
+
+// Flights
+
+const [tripType, setTripType] = useState<'oneway' | 'roundtrip'>('oneway');
+const [flightAdults, setFlightAdults] = useState(1);
+const [flightChildren, setFlightChildren] = useState(0);
+const flightPassengers = flightAdults + flightChildren;
+
+
+
 
   return (
     <section
@@ -168,14 +192,14 @@ export function HeroSection() {
                   <div className="flex flex-col gap-2 text-left">
                     <Label htmlFor="destination">Destination</Label>
                     <div className="relative w-full">
-                      <MapPin className="absolute left-2 top-1/2 -translate-y-1/2 text-blue-500" size={18} />
-                      <Input
-                        id="destination"
-                        placeholder="e.g., Bali"
-                        className="pl-8 h-10"
-                        value={destination}
-                        onChange={(e) => setDestination(e.target.value)}
-                      />
+                     <MapPin className="absolute left-2.5 top-1/2 -translate-y-1/2 text-blue-500" size={16} />
+                     <Input
+                     id="destination"
+                     placeholder="e.g., Bali"
+                     className="pl-7 h-10"
+                     value={destination}
+                     onChange={(e) => setDestination(e.target.value)}
+/>
                     </div>
                   </div>
 
@@ -184,10 +208,20 @@ export function HeroSection() {
                     <Label>Check-in</Label>
                     <Popover>
                       <PopoverTrigger asChild>
-                        <Button variant={"outline"} className={cn("w-full justify-start text-left font-normal h-10", !checkInDate && "text-muted-foreground")}>
-                          <CalendarIcon className="mr-1 h-4 w-4 text-blue-500" />
-                          {checkInDate ? format(checkInDate, "dd MMM yyyy") : <span>Select Date</span>}
-                        </Button>
+                     <Button
+  variant="outline"
+  className={cn(
+    "w-full justify-start text-left font-normal h-10 px-2", // reduce padding
+    !checkInDate && "text-muted-foreground"
+  )}
+>
+  <span className="flex items-center gap-1"> 
+    {/* gap-1 is smaller than mr-1, and flex keeps alignment tight */}
+    <CalendarIcon className="h-4 w-4 text-blue-500" />
+    {checkInDate ? format(checkInDate, "dd MMM yyyy") : <span>Select Date</span>}
+  </span>
+</Button>
+
                       </PopoverTrigger>
                       <PopoverContent className="w-auto p-0 bg-slate-900 text-white border-slate-700">
                         <Calendar mode="single" selected={checkInDate} onSelect={setCheckInDate} initialFocus />
@@ -200,10 +234,19 @@ export function HeroSection() {
                     <Label>Check-out</Label>
                     <Popover>
                       <PopoverTrigger asChild>
-                        <Button variant={"outline"} className={cn("w-full justify-start text-left font-normal h-10", !checkOutDate && "text-muted-foreground")}>
-                          <CalendarIcon className="mr-1 h-4 w-4 text-blue-500" />
-                          {checkOutDate ? format(checkOutDate, "dd MMM yyyy") : <span>Select Date</span>}
-                        </Button>
+                       <Button
+  variant="outline"
+  className={cn(
+    "w-full justify-start text-left font-normal h-10 px-2",
+    !checkOutDate && "text-muted-foreground"
+  )}
+>
+  <span className="flex items-center gap-[2px]">
+    <CalendarIcon className="h-4 w-4 text-blue-500" />
+    {checkOutDate ? format(checkOutDate, "dd MMM yyyy") : <span>Select Date</span>}
+  </span>
+</Button>
+
                       </PopoverTrigger>
                       <PopoverContent className="w-auto p-0 bg-slate-900 text-white border-slate-700">
                         <Calendar mode="single" selected={checkOutDate} onSelect={setCheckOutDate} initialFocus />
@@ -213,16 +256,21 @@ export function HeroSection() {
 
                   {/* Room & Guest */}
                   <div className="flex flex-col gap-2 text-left">
-                    <Label>Room & Guest</Label>
-                    <Popover>
-                      <PopoverTrigger asChild>
-                        <Button variant="outline" className="w-full justify-start font-normal h-10">
-                          <User className="mr-1 h-4 w-4 text-blue-500" />
-                          <span>{`${rooms} Room, ${guests} Guest${guests > 1 ? 's' : ''}`}</span>
-                        </Button>
-                      </PopoverTrigger>
-                      <PopoverContent className="w-72 p-4 bg-slate-900 text-white border-slate-700">
-                        <div className="space-y-4">
+  <Label>Room & Guest</Label>
+  <Popover>
+    <PopoverTrigger asChild>
+      <Button
+        variant="outline"
+        className="w-full justify-start font-normal h-10 px-2"
+      >
+        <span className="flex items-center gap-[2px]">
+          <User className="h-4 w-4 text-blue-500" />
+          <span>{`${rooms} Room, ${guests} Guest${guests > 1 ? 's' : ''}`}</span>
+        </span>
+      </Button>
+    </PopoverTrigger>
+    <PopoverContent className="w-72 p-4 bg-slate-900 text-white border-slate-700">
+      <div className="space-y-4">
                           {/* Rooms */}
                           <div className="flex items-center justify-between">
                             <Label className='text-white'>Rooms</Label>
@@ -266,108 +314,243 @@ export function HeroSection() {
               </TabsContent>
 
               {/* --- FLIGHTS TAB --- */}
-              <TabsContent value="flights">
-                <div className="grid grid-cols-1 md:grid-cols-4 gap-4 items-end">
-                  <div className="md:col-span-1 flex flex-col gap-2 text-left">
-                    <Label>From - To</Label>
-                    <div className="grid grid-cols-2">
-                      <div className="relative">
-                        <PlaneTakeoff className="absolute left-3 top-1/2 -translate-y-1/2 text-blue-500" size={20} />
-                        <Input placeholder="From" className="pl-10 h-10 rounded-r-none border-r-0" value={from} onChange={(e) => setFrom(e.target.value)} />
-                      </div>
-                      <div className="relative">
-                        <PlaneLanding className="absolute right-3 top-1/2 -translate-y-1/2 text-blue-500" size={20} />
-                        <Input placeholder="To" className="pr-10 h-10 rounded-l-none text-right" value={to} onChange={(e) => setTo(e.target.value)} />
-                      </div>
-                    </div>
-                  </div>
-                  <div className="md:col-span-1 flex flex-col gap-2 text-left">
-                    <Label>Depart - Return</Label>
-                    <div className="grid grid-cols-2">
-                      <Popover>
-                        <PopoverTrigger asChild>
-                          <Button variant={"outline"} className={cn("justify-start text-left font-normal h-10 rounded-r-none border-r-0", !departDate && "text-muted-foreground")}>
-                            <CalendarIcon className="mr-2 h-4 w-4 text-blue-500" />
-                            {departDate ? format(departDate, "dd MMM") : <span>Depart</span>}
-                          </Button>
-                        </PopoverTrigger>
-                        <PopoverContent className="w-auto p-0 bg-slate-900 text-white border-slate-700">
-                          <Calendar mode="single" selected={departDate} onSelect={setDepartDate} initialFocus />
-                        </PopoverContent>
-                      </Popover>
-                      <Popover>
-                        <PopoverTrigger asChild>
-                          <Button variant={"outline"} className={cn("justify-start text-left font-normal h-10 rounded-l-none", !returnDate && "text-muted-foreground")}>
-                            <CalendarIcon className="mr-2 h-4 w-4 text-blue-500" />
-                            {returnDate ? format(returnDate, "dd MMM") : <span>Return</span>}
-                          </Button>
-                        </PopoverTrigger>
-                        <PopoverContent className="w-auto p-0 bg-slate-900 text-white border-slate-700">
-                          <Calendar mode="single" selected={returnDate} onSelect={setReturnDate} initialFocus />
-                        </PopoverContent>
-                      </Popover>
-                    </div>
-                  </div>
-                  <div className="md:col-span-1 flex flex-col gap-2 text-left">
-                    <Label>Passengers</Label>
-                    <Popover>
-                      <PopoverTrigger asChild>
-                        <Button variant="outline" className="w-full justify-start font-normal h-10">
-                          <User className="mr-2 h-4 w-4 text-blue-500" />
-                          <span>{`${passengers} Adult(s)`}</span>
-                        </Button>
-                      </PopoverTrigger>
-                      <PopoverContent className="w-64 p-4 bg-slate-900 text-white border-slate-700">
-                        <div className="flex items-center justify-between">
-                          <Label className='text-white'>Adults</Label>
-                          <div className="flex items-center gap-2">
-                            <Button onClick={() => setPassengers(Math.max(1, passengers - 1))} variant="outline" size="icon" className="h-8 w-8 bg-slate-800 border-slate-600 hover:bg-slate-700"><Minus className="h-4 w-4" /></Button>
-                            <span className="font-bold w-4 text-center">{passengers}</span>
-                            <Button onClick={() => setPassengers(passengers + 1)} variant="outline" size="icon" className="h-8 w-8 bg-slate-800 border-slate-600 hover:bg-slate-700"><Plus className="h-4 w-4" /></Button>
-                          </div>
-                        </div>
-                      </PopoverContent>
-                    </Popover>
-                  </div>
-                  <div className="md:col-span-1">
-                    <Button onClick={handleFlightSearch} className="w-full h-10 bg-blue-500 hover:bg-blue-600 text-white">
-                      <Search className="mr-2 h-4 w-4" /> Search
-                    </Button>
-                  </div>
-                </div>
-              </TabsContent>
+            <TabsContent value="flights">
+  <div className="flex flex-wrap md:flex-nowrap gap-3 w-full items-end">
+
+    {/* From */}
+    <div className="flex-1 flex flex-col gap-1">
+      <Label className="text-sm">From</Label>
+      <div className="relative">
+        <PlaneTakeoff className="absolute left-2.5 top-1/2 -translate-y-1/2 text-blue-500" size={16} />
+        <Input
+          placeholder="From"
+          className="pl-7 h-10"
+          value={from}
+          onChange={(e) => setFrom(e.target.value)}
+        />
+      </div>
+    </div>
+
+    {/* To */}
+   <div className="flex-1 flex flex-col gap-1">
+  <Label className="text-sm">To</Label>
+  <div className="relative">
+    <PlaneLanding className="absolute right-2.5 top-1/2 -translate-y-1/2 text-blue-500" size={16} />
+    <Input
+      placeholder="To"
+      className="pr-7 h-10 text-right placeholder:text-right" // 👈 both text and placeholder align right
+      value={to}
+      onChange={(e) => setTo(e.target.value)}
+    />
+  </div>
+</div>
+
+    {/* Trip Type */}
+    <div className="flex flex-col gap-1">
+      <Label className="text-sm">Trip Type</Label>
+      <div className="flex border rounded-md overflow-hidden">
+        <button
+          type="button"
+          className={`flex-1 h-10 text-sm font-medium text-gray-700 ${
+            tripType === 'oneway' ? 'border-black border' : 'border-r border-gray-300'
+          }`}
+          onClick={() => setTripType('oneway')}
+        >
+          One-way
+        </button>
+        <button
+          type="button"
+          className={`flex-1 h-10 text-sm font-medium text-gray-700 ${
+            tripType === 'roundtrip' ? 'border-black border' : ''
+          }`}
+          onClick={() => setTripType('roundtrip')}
+        >
+          Round-trip
+        </button>
+      </div>
+    </div>
+
+    {/* Depart */}
+   <div className="flex-1 flex flex-col gap-1">
+  <Label className="text-sm">Depart</Label>
+  <Popover>
+    <PopoverTrigger asChild>
+      <Button
+        variant="outline"
+        className={cn(
+          "justify-start text-left font-normal h-10 px-2",
+          !departDate && "text-muted-foreground"
+        )}
+      >
+        <span className="flex items-center gap-[2px]">
+          <CalendarIcon className="h-4 w-4 text-blue-500" />
+          {departDate ? (
+            format(departDate, "dd MMM yyyy")
+          ) : (
+            <span>Depart</span>
+          )}
+        </span>
+      </Button>
+    </PopoverTrigger>
+    <PopoverContent className="w-auto p-0 bg-slate-900 text-white border-slate-700">
+      <Calendar mode="single" selected={departDate} onSelect={setDepartDate} initialFocus />
+    </PopoverContent>
+  </Popover>
+</div>
+
+    {/* Return - only for roundtrip */}
+   {tripType === "roundtrip" && (
+  <div className="flex-1 flex flex-col gap-1">
+    <Label className="text-sm">Return</Label>
+    <Popover>
+      <PopoverTrigger asChild>
+        <Button
+          variant="outline"
+          className={cn(
+            "justify-start text-left font-normal h-10 px-2",
+            !returnDate && "text-muted-foreground"
+          )}
+        >
+          <span className="flex items-center gap-[2px]">
+            <CalendarIcon className="h-4 w-4 text-blue-500" />
+            {returnDate ? (
+              format(returnDate, "dd MMM yyyy")
+            ) : (
+              <span>Return</span>
+            )}
+          </span>
+        </Button>
+      </PopoverTrigger>
+      <PopoverContent className="w-auto p-0 bg-slate-900 text-white border-slate-700">
+        <Calendar mode="single" selected={returnDate} onSelect={setReturnDate} initialFocus />
+      </PopoverContent>
+    </Popover>
+  </div>
+)}
+
+    {/* Passengers */}
+   <div className="flex-1 flex flex-col gap-1">
+  <Label className="text-sm">Passengers</Label>
+  <Popover>
+    <PopoverTrigger asChild>
+      <Button
+        variant="outline"
+        className="w-full justify-start font-normal h-10 px-2"
+      >
+        <span className="flex items-center gap-[2px]">
+          <User className="h-4 w-4 text-blue-500" />
+          <span>{`${flightAdults + flightChildren} Passenger${
+            flightAdults + flightChildren > 1 ? "s" : ""
+          }`}</span>
+        </span>
+      </Button>
+    </PopoverTrigger>
+    <PopoverContent className="w-72 p-4 bg-slate-900 text-white border-slate-700">
+      <div className="space-y-4">
+            {/* Adults */}
+            <div className="flex items-center justify-between">
+              <Label className='text-white'>Adults</Label>
+              <div className="flex items-center gap-2">
+                <Button onClick={() => setFlightAdults(Math.max(1, flightAdults - 1))} variant="outline" size="icon" className="h-7 w-7 bg-slate-800 border-slate-600 hover:bg-slate-700">
+                  <Minus className="h-3 w-3" />
+                </Button>
+                <span className="font-bold w-4 text-center">{flightAdults}</span>
+                <Button onClick={() => setFlightAdults(flightAdults + 1)} variant="outline" size="icon" className="h-7 w-7 bg-slate-800 border-slate-600 hover:bg-slate-700">
+                  <Plus className="h-3 w-3" />
+                </Button>
+              </div>
+            </div>
+            <Separator className="bg-slate-700" />
+            {/* Children */}
+            <div className="flex items-center justify-between">
+              <Label className='text-white'>Children</Label>
+              <div className="flex items-center gap-2">
+                <Button onClick={() => setFlightChildren(Math.max(0, flightChildren - 1))} variant="outline" size="icon" className="h-7 w-7 bg-slate-800 border-slate-600 hover:bg-slate-700">
+                  <Minus className="h-3 w-3" />
+                </Button>
+                <span className="font-bold w-4 text-center">{flightChildren}</span>
+                <Button onClick={() => setFlightChildren(flightChildren + 1)} variant="outline" size="icon" className="h-7 w-7 bg-slate-800 border-slate-600 hover:bg-slate-700">
+                  <Plus className="h-3 w-3" />
+                </Button>
+              </div>
+            </div>
+          </div>
+        </PopoverContent>
+      </Popover>
+    </div>
+
+    {/* Search Button */}
+    <div className="flex-none w-full md:w-auto mt-2 md:mt-0">
+      <Button
+        onClick={() => {
+          if (!from || !to) return alert('Please enter origin and destination');
+          if (!departDate) return alert('Please select a departure date');
+          if (tripType === 'roundtrip' && !returnDate) return alert('Please select a return date');
+          handleFlightSearch();
+        }}
+        className="w-full md:w-auto h-10 bg-blue-500 hover:bg-blue-600 text-white font-semibold"
+      >
+        <Search className="h-4 w-4 mr-1" /> Search
+      </Button>
+    </div>
+
+  </div>
+</TabsContent>
+
+
+
 
               {/* --- PACKAGES TAB --- */}
-              <TabsContent value="packages">
-                <div className="grid grid-cols-1 md:grid-cols-5 gap-4 items-end">
-                  <div className="flex flex-col gap-2 text-left md:col-span-2">
-                    <Label htmlFor="pkgDestination">Package Destination</Label>
-                    <div className="relative w-full">
-                      <MapPin className="absolute left-3 top-1/2 -translate-y-1/2 text-blue-500" size={20} />
-                      <Input
-                        id="pkgDestination"
-                        placeholder="e.g., Amalfi Coast"
-                        className="pl-10 h-10"
-                        value={pkgDestination}
-                        onChange={(e) => setPkgDestination(e.target.value)}
-                      />
-                    </div>
-                  </div>
+            <TabsContent value="packages">
+  <div className="grid grid-cols-1 md:grid-cols-5 gap-3 items-end"> {/* ↓ reduced from gap-4 to gap-3 */}
+    
+    {/* Destination */}
+    <div className="flex flex-col gap-1 text-left md:col-span-2"> {/* ↓ reduced from gap-2 to gap-1 */}
+      <Label htmlFor="pkgDestination" className="text-sm">Package Destination</Label>
+      <div className="relative w-full">
+        <MapPin className="absolute left-3 top-1/2 -translate-y-1/2 text-blue-500" size={18} />
+        <Input
+          id="pkgDestination"
+          placeholder="e.g., Amalfi Coast"
+          className="pl-9 h-10"
+          value={pkgDestination}
+          onChange={(e) => setPkgDestination(e.target.value)}
+        />
+      </div>
+    </div>
 
                   <div className="flex flex-col gap-2 text-left">
-                    <Label>Start Date</Label>
-                    <Popover>
-                      <PopoverTrigger asChild>
-                        <Button variant={"outline"} className={cn("w-full justify-start text-left font-normal h-10", !pkgStartDate && "text-muted-foreground")}>
-                          <CalendarIcon className="mr-2 h-4 w-4 text-blue-500" />
-                          {pkgStartDate ? format(pkgStartDate, "dd MMM yyyy") : <span>Select Date</span>}
-                        </Button>
-                      </PopoverTrigger>
-                      <PopoverContent className="w-auto p-0 bg-slate-900 text-white border-slate-700">
-                        <Calendar mode="single" selected={pkgStartDate} onSelect={setPkgStartDate} initialFocus />
-                      </PopoverContent>
-                    </Popover>
-                  </div>
+  <Label>Start Date</Label>
+  <Popover>
+    <PopoverTrigger asChild>
+      <Button
+        variant={"outline"}
+        className={cn(
+          "w-full justify-start text-left font-normal h-10 px-2",
+          !pkgStartDate && "text-muted-foreground"
+        )}
+      >
+        <span className="flex items-center gap-[2px]">
+          <CalendarIcon className="h-4 w-4 text-blue-500" />
+          {pkgStartDate ? (
+            format(pkgStartDate, "dd MMM yyyy")
+          ) : (
+            <span>Select Date</span>
+          )}
+        </span>
+      </Button>
+    </PopoverTrigger>
+    <PopoverContent className="w-auto p-0 bg-slate-900 text-white border-slate-700">
+      <Calendar
+        mode="single"
+        selected={pkgStartDate}
+        onSelect={setPkgStartDate}
+        initialFocus
+      />
+    </PopoverContent>
+  </Popover>
+</div>
+
 
                   <div className="flex flex-col gap-2 text-left">
                     <Label>Nights</Label>

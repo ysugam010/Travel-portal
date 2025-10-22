@@ -219,6 +219,30 @@
       "name": "The Grand Bali Resort",
       "location": "Nusa Dua, Bali",
       "bookingDate": "2025-09-15"
+    },
+    {
+      "id": "1760684021750",
+      "userEmail": "vinayak@gmial.com",
+      "type": "Hotel",
+      "name": "The Grand Bali Resort",
+      "location": "Nusa Dua, Bali",
+      "bookingDate": "2025-10-17"
+    },
+    {
+      "id": "1760684085146",
+      "userEmail": "vinayak@gmial.com",
+      "type": "Flight",
+      "name": "Vistara - UK 944",
+      "location": "DEL → BOM",
+      "bookingDate": "2025-10-17"
+    },
+    {
+      "id": "1760684100444",
+      "userEmail": "vinayak@gmial.com",
+      "type": "Package",
+      "name": "Santorini Signature – 3N / 4D",
+      "location": "Santorini",
+      "bookingDate": "2025-10-17"
     }
   ]
 }
