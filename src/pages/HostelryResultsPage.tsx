@@ -10,7 +10,8 @@ import { useCurrency } from "@/context/CurrencyContext";
 import { useAuthDialog } from "@/context/AuthDialogContext";
 import { motion } from "motion/react";
 import { Navbar } from "@/components/custom/Navbar";
-import { format } from "date-fns";
+// --- Imports from date-fns ---
+import { format, addDays, max, parseISO, startOfToday } from "date-fns";
 
 import grandBali from "@/assets/18.jpg";
 import ubudVilla from "@/assets/16.jpg";
@@ -34,12 +35,25 @@ type Hotel = {
   image: string;
 };
 
+// --- Helper function to format date strings for the <input type="date"> ---
+const formatDateForInput = (dateString: string): string => {
+  if (!dateString) return "";
+  try {
+    // parseISO is robust and can handle both full ISO strings and "yyyy-MM-dd"
+    const date = parseISO(dateString);
+    return format(date, "yyyy-MM-dd");
+  } catch (e) {
+    // Fallback for invalid date string
+    return "";
+  }
+};
+
 function FilterSidebar() {
   const [searchParams] = useSearchParams();
   const navigate = useNavigate();
   const { currency, setCurrency } = useCurrency();
 
-  // Extract params cleanly
+  // 'initialSearch' will hold the RAW values from the URL for display
   const initialSearch = {
     destination: searchParams.get("destination") || "",
     rooms: searchParams.get("rooms") || "1",
@@ -49,17 +63,38 @@ function FilterSidebar() {
     checkOut: searchParams.get("checkOut") || "",
   };
 
-  // Handle backward compatibility when guests param is combined (like guests=10)
+  // Handle backward compatibility
   const guestsParam = searchParams.get("guests");
-  if (guestsParam && (!searchParams.get("adults") || !searchParams.get("children"))) {
+  if (
+    guestsParam &&
+    (!searchParams.get("adults") || !searchParams.get("children"))
+  ) {
     const totalGuests = parseInt(guestsParam, 10);
-    // Default: assume half adults, half children if only guests given
     initialSearch.adults = Math.ceil(totalGuests / 2).toString();
     initialSearch.children = Math.floor(totalGuests / 2).toString();
   }
 
-  const [searchValues, setSearchValues] = useState(initialSearch);
+  // 'searchValues' state holds the *formatted* values for the inputs
+  const [searchValues, setSearchValues] = useState({
+    ...initialSearch, // Copy over destination, rooms, etc.
+    // Overwrite dates with the *formatted* versions
+    checkIn: formatDateForInput(initialSearch.checkIn),
+    checkOut: formatDateForInput(initialSearch.checkOut),
+  });
   const [isEditing, setIsEditing] = useState(false);
+
+  // This useEffect hook must also set the *formatted* dates
+  useEffect(() => {
+    if (!isEditing) {
+      // 'initialSearch' is re-calculated on every render with the new params
+      setSearchValues({
+        ...initialSearch,
+        checkIn: formatDateForInput(initialSearch.checkIn),
+        checkOut: formatDateForInput(initialSearch.checkOut),
+      });
+    }
+    // We use searchParams.toString() as the dependency
+  }, [searchParams.toString(), isEditing]);
 
   const handleApplyChanges = () => {
     const query = new URLSearchParams({
@@ -74,6 +109,9 @@ function FilterSidebar() {
     navigate(`?${query}`);
     setIsEditing(false);
   };
+
+  const today = startOfToday();
+  const todayString = format(today, "yyyy-MM-dd");
 
   return (
     <Card className="sticky top-24 bg-white/90 backdrop-blur shadow-md rounded-2xl border border-blue-100">
@@ -138,31 +176,69 @@ function FilterSidebar() {
           {[
             { label: "Check-In", key: "checkIn" },
             { label: "Check-Out", key: "checkOut" },
-          ].map(({ label, key }) => (
-            <div className="flex-1" key={key}>
-              <p className="text-gray-500 text-sm mb-1">{label}</p>
-              {isEditing ? (
-                <input
-                  type="date"
-                  min={new Date().toISOString().split("T")[0]}
-                  value={(searchValues as any)[key]}
-                  onChange={(e) =>
-                    setSearchValues({ ...searchValues, [key]: e.target.value })
-                  }
-                  className="w-full border border-blue-200 rounded-lg p-2 text-sm focus:ring-2 focus:ring-blue-400 outline-none"
-                />
-              ) : (
-                <div className="flex items-center gap-2">
-                  <Calendar className="h-4 w-4 text-blue-500" />
-                  <p className="font-medium">
-                    {(initialSearch as any)[key]
-                      ? format(new Date((initialSearch as any)[key]), "dd MMM yyyy")
-                      : "-"}
-                  </p>
-                </div>
-              )}
-            </div>
-          ))}
+          ].map(({ label, key }) => {
+            const getMinDate = () => {
+              if (key === "checkIn") {
+                return todayString;
+              }
+              if (searchValues.checkIn) {
+                try {
+                  const checkInDate = parseISO(searchValues.checkIn);
+                  const dayAfterCheckIn = addDays(checkInDate, 1);
+                  const minDate = max([dayAfterCheckIn, today]);
+                  return format(minDate, "yyyy-MM-dd");
+                } catch (e) {
+                  return todayString;
+                }
+              }
+              return todayString;
+            };
+
+            return (
+              <div className="flex-1" key={key}>
+                <p className="text-gray-500 text-sm mb-1">{label}</p>
+                {isEditing ? (
+                  <input
+                    type="date"
+                    min={getMinDate()}
+                    value={(searchValues as any)[key]}
+                    onChange={(e) => {
+                      const newValues = {
+                        ...searchValues,
+                        [key]: e.target.value,
+                      };
+
+                      if (
+                        key === "checkIn" &&
+                        newValues.checkOut &&
+                        newValues.checkIn >= newValues.checkOut
+                      ) {
+                        const newCheckInDate = parseISO(newValues.checkIn);
+                        newValues.checkOut = format(
+                          addDays(newCheckInDate, 1),
+                          "yyyy-MM-dd"
+                        );
+                      }
+                      setSearchValues(newValues);
+                    }}
+                    className="w-full border border-blue-200 rounded-lg p-2 text-sm focus:ring-2 focus:ring-blue-400 outline-none"
+                  />
+                ) : (
+                  <div className="flex items-center gap-2">
+                    <Calendar className="h-4 w-4 text-blue-500" />
+                    <p className="font-medium">
+                      {(initialSearch as any)[key]
+                        ? format(
+                            parseISO((initialSearch as any)[key]),
+                            "dd MMM yyyy"
+                          )
+                        : "-"}
+                    </p>
+                  </div>
+                )}
+              </div>
+            );
+          })}
         </div>
 
         <Separator />
@@ -279,7 +355,9 @@ export function HostelryResultsPage() {
             Hotels in "{destination}"
           </motion.h1>
 
-          {loading && <p className="text-center text-gray-500">Loading results...</p>}
+          {loading && (
+            <p className="text-center text-gray-500">Loading results...</p>
+          )}
           {error && <p className="text-center text-red-500">{error}</p>}
 
           {!loading && !error && (
@@ -302,6 +380,7 @@ export function HostelryResultsPage() {
                           <img
                             src={hotelImages[hotel.image]}
                             alt={hotel.name}
+                            // --- STYLE FIX 1: Fixed typo 1D/3 -> 1/3 ---
                             className="w-full md:w-1/3 h-64 object-cover md:h-64"
                           />
                           <div className="p-6 flex flex-col justify-between flex-grow">
@@ -335,10 +414,11 @@ export function HostelryResultsPage() {
                               <div>
                                 <p className="text-xl font-bold text-gray-900">
                                   {getSymbol()}
-                                  {convertPrice(hotel.price_per_night).toLocaleString(
-                                    undefined,
-                                    { maximumFractionDigits: 2 }
-                                  )}
+                                  {convertPrice(
+                                    hotel.price_per_night
+                                  ).toLocaleString(undefined, {
+                                    maximumFractionDigits: 2,
+                                  })}
                                 </p>
                                 <p className="text-xs text-gray-500">/night</p>
                               </div>
