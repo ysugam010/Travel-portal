@@ -7,13 +7,13 @@ type User = {
   email: string;
 };
 
-type AuthContextType = {
+export type AuthContextType = {
   user: User | null;
   login: (userData: User) => void;
   logout: () => void;
 };
 
-const AuthContext = createContext<AuthContextType | undefined>(undefined);
+export const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [user, setUser] = useState<User | null>(null);

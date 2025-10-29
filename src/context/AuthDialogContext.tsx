@@ -3,14 +3,14 @@ import type { ReactNode } from 'react';
 
 type DialogTab = "signin" | "signup";
 
-type AuthDialogContextType = {
+export type AuthDialogContextType = {
   isOpen: boolean;
   activeTab: DialogTab;
   openDialog: (tab?: DialogTab) => void;
   closeDialog: () => void;
 };
 
-const AuthDialogContext = createContext<AuthDialogContextType | undefined>(undefined);
+export const AuthDialogContext = createContext<AuthDialogContextType | undefined>(undefined);
 
 export function AuthDialogProvider({ children }: { children: ReactNode }) {
   const [isOpen, setIsOpen] = useState(false);

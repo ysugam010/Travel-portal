@@ -4,12 +4,16 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
 import { Mail, Phone, MapPin, Send } from "lucide-react";
+import React from "react";
 
 export function SupportCenterPage() {
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    window.alert("Message sent successfully!");
+  };
+
   return (
     <div className="min-h-screen flex flex-col bg-gradient-to-b from-blue-50 to-white">
-      
-
       <main className="flex-grow container mx-auto px-6 py-20">
         <div className="text-center mb-12">
           <h1 className="text-5xl font-bold text-gray-800 mb-4">Support Center</h1>
@@ -35,7 +39,7 @@ export function SupportCenterPage() {
                   <Phone className="h-5 w-5 text-blue-600" /> +44 20 7946 0000
                 </p>
                 <p className="flex items-center gap-3">
-                  <MapPin className="h-5 w-5 text-blue-600" />30 Great Peter St, Westminster, London SW1P 2BU, United Kingdom
+                  <MapPin className="h-5 w-5 text-blue-600" /> 30 Great Peter St, Westminster, London SW1P 2BU, United Kingdom
                 </p>
               </CardContent>
             </Card>
@@ -83,20 +87,44 @@ export function SupportCenterPage() {
               </CardTitle>
             </CardHeader>
             <CardContent>
-              <form className="space-y-4">
+              <form
+                className="space-y-4"
+                onSubmit={handleSubmit}
+                aria-label="support-form"
+              >
                 <div>
-                  <label className="block mb-1 text-gray-700 font-medium">Name</label>
-                  <Input placeholder="Enter your name" />
+                  <label htmlFor="support-name" className="block mb-1 text-gray-700 font-medium">
+                    Name
+                  </label>
+                  <Input
+                    id="support-name"
+                    placeholder="Enter your name"
+                  />
                 </div>
                 <div>
-                  <label className="block mb-1 text-gray-700 font-medium">Email</label>
-                  <Input type="email" placeholder="Enter your email" />
+                  <label htmlFor="support-email" className="block mb-1 text-gray-700 font-medium">
+                    Email
+                  </label>
+                  <Input
+                    id="support-email"
+                    type="email"
+                    placeholder="Enter your email"
+                  />
                 </div>
                 <div>
-                  <label className="block mb-1 text-gray-700 font-medium">Message</label>
-                  <Textarea placeholder="Type your message here..." rows={4} />
+                  <label htmlFor="support-message" className="block mb-1 text-gray-700 font-medium">
+                    Message
+                  </label>
+                  <Textarea
+                    id="support-message"
+                    placeholder="Type your message here..."
+                    rows={4}
+                  />
                 </div>
-                <Button className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-lg">
+                <Button
+                  type="submit"
+                  className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-lg"
+                >
                   <Send className="mr-2 h-5 w-5" /> Send Message
                 </Button>
               </form>

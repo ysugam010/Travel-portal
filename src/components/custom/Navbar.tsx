@@ -47,6 +47,7 @@ export function Navbar() {
         <Link
           to="/"
           className={`text-2xl font-bold tracking-wide ${textColor}`}
+         
         >
           Tripco
         </Link>

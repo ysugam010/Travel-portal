@@ -17,6 +17,7 @@ import baliTempleImg from '@/assets/66.jpg';
 import romeImg from '@/assets/65.jpg'; // Added new image
 import sydneyImg from '@/assets/62.jpg'; // Added new image
 import travelVideo from '@/assets/videos/travel-video.mp4';
+import { CurrencyProvider } from "@/context/CurrencyContext";
 
 // --- Added more destinations for a better slider experience ---
 const adventures = [
@@ -38,6 +39,7 @@ export function AdventureSection() {
         videoRef.current.pause();
       } else {
         videoRef.current.play();
+        
       }
       setIsPlaying(!isPlaying);
     }

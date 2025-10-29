@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { format, parseISO, addDays, startOfToday, max } from "date-fns";
+import { format, parseISO, addDays, startOfToday } from "date-fns";
 import { useNavigate, useLocation } from 'react-router-dom';
 import {
   MapPin,
