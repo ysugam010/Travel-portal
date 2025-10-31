@@ -28,7 +28,7 @@ export function HeroSection() {
   const location = useLocation();
   const [lastSearch, setLastSearch] = useState<string | null>(null);
 
-  // --- State Variables ---
+  // State Variables
   const [destination, setDestination] = useState('');
   const [checkInDate, setCheckInDate] = useState<Date | undefined>();
   const [checkOutDate, setCheckOutDate] = useState<Date | undefined>();
@@ -46,7 +46,7 @@ export function HeroSection() {
 
   const [flightPassengers, setFlightPassengers] = useState({ adults: 1, children: 0 });
   
-  // --- Packages specific ---
+  // Packages specific 
   const [pkgDestination, setPkgDestination] = useState('');
   const [pkgStartDate, setPkgStartDate] = useState<Date | undefined>();
   const [pkgNights, setPkgNights] = useState(3);
@@ -54,13 +54,13 @@ export function HeroSection() {
 
   const today = startOfToday();
 
-  // --- Load from localStorage ---
+  // Load from localStorage
   useEffect(() => {
     const savedSearch = localStorage.getItem('tripco-last-search');
     if (savedSearch) setLastSearch(savedSearch);
   }, []);
 
-  // --- Load all params from URL ---
+  // Load all params from URL
   useEffect(() => {
     const params = new URLSearchParams(location.search);
     const destinationParam = params.get('destination');
@@ -84,7 +84,7 @@ export function HeroSection() {
   }, [location.search]);
 
 
-  // --- Handle Search ---
+  // Handle Search 
   const handleHostelrySearch = () => {
     if (!destination) {
       alert('Please enter a destination.');
@@ -140,7 +140,7 @@ export function HeroSection() {
     navigate(`/flight-results${query}`);
   };
 
-  // --- Package search handler ---
+  //Package search handler
   const handlePackageSearch = () => {
     if (!pkgDestination) {
       alert('Please enter a destination for packages.');
@@ -162,7 +162,7 @@ export function HeroSection() {
 
   const [tripType, setTripType] = useState<'oneway' | 'roundtrip'>('oneway');
 
-  // --- STYLE FIX 2: New Tab Style ---
+
   const tabTriggerClassName = cn(
     "px-4 py-1.5 text-sm font-medium text-gray-600 rounded-md transition-all",
     "data-[state=active]:bg-white data-[state=active]:text-black",
@@ -187,7 +187,7 @@ export function HeroSection() {
           <CardContent className="p-4">
             <Tabs defaultValue="hostelry" className="w-full">
               <div className="flex justify-between items-center mb-4">
-                {/* --- STYLE FIX 2: Applied new tab styling --- */}
+                {/* STYLE FIX 2: Applied new tab styling*/}
                 <TabsList className="grid grid-cols-5 w-fit bg-transparent p-0 h-auto gap-2">
                   <TabsTrigger value="hostelry" className={tabTriggerClassName}>Hostelry</TabsTrigger>
                   <TabsTrigger value="flights" className={tabTriggerClassName}>Flights</TabsTrigger>
@@ -195,7 +195,7 @@ export function HeroSection() {
                   <TabsTrigger value="cars" className={tabTriggerClassName}>Cars</TabsTrigger>
                   <TabsTrigger value="packages" className={tabTriggerClassName}>Packages</TabsTrigger>
                 </TabsList>
-                {/* --- END FIX --- */}
+                {/* END FIX */}
                 {lastSearch && (
                   <div className="flex items-center text-sm text-gray-600 cursor-pointer">
                     Last Searching: <span className="font-semibold ml-1">{lastSearch}</span>
@@ -204,7 +204,7 @@ export function HeroSection() {
                 )}
               </div>
 
-              {/* --- HOSTELRY TAB --- */}
+              {/*HOSTELRY TAB */}
               <TabsContent value="hostelry">
                 <div className="grid grid-cols-1 md:grid-cols-5 gap-4 items-end">
                   {/* Destination */}
@@ -344,7 +344,7 @@ export function HeroSection() {
                 </div>
               </TabsContent>
 
-              {/* --- FLIGHTS TAB --- */}
+              {/* FLIGHTS TAB */}
               <TabsContent value="flights">
                 <div className="flex flex-wrap md:flex-nowrap gap-3 w-full items-end">
                   {/* From */}
@@ -375,7 +375,7 @@ export function HeroSection() {
                     </div>
                   </div>
 
-                  {/* --- STYLE FIX 3: Trip Type Button Group --- */}
+                  
                   <div className="flex flex-col gap-1">
                     <Label className="text-sm">Trip Type</Label>
                     <div className="flex border border-gray-300 rounded-md overflow-hidden h-10">
@@ -397,7 +397,7 @@ export function HeroSection() {
                         className={cn(
                           "flex-1 px-3 text-sm font-medium transition-colors border-l border-gray-300",
                           "focus:outline-none focus:ring-2 focus:ring-blue-400 focus:z-10",
-                          "whitespace-nowrap", // <-- Prevents wrapping
+                          "whitespace-nowrap",
                           tripType === 'roundtrip' 
                             ? 'bg-blue-600 text-white' 
                             : 'bg-white text-gray-700 hover:bg-gray-50'
@@ -408,7 +408,7 @@ export function HeroSection() {
                       </button>
                     </div>
                   </div>
-                  {/* --- END FIX --- */}
+                  {/* END FIX */}
 
 
                   {/* Depart */}
@@ -549,7 +549,7 @@ export function HeroSection() {
                 </div>
               </TabsContent>
 
-              {/* --- PACKAGES TAB --- */}
+              {/* PACKAGES TAB */}
               <TabsContent value="packages">
                 <div className="grid grid-cols-1 md:grid-cols-5 gap-3 items-end">
                   {/* Destination */}

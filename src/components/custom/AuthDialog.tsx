@@ -18,7 +18,7 @@ type User = {
   email: string;
 };
 
-// --- Sign In Form ---
+//Sign In Form
 function SignInForm({ onSuccess }: { onSuccess: () => void }) {
   const { login } = useAuth();
 
@@ -30,7 +30,7 @@ function SignInForm({ onSuccess }: { onSuccess: () => void }) {
   const [show, setShow] = useState(false);
   const [showDropdown, setShowDropdown] = useState(false);
 
-  // ✅ Fetch all users from API for suggestions
+  //Fetch all users from API for suggestions
   const [allUsers, setAllUsers] = useState<User[]>([]);
 
   useEffect(() => {
@@ -129,7 +129,7 @@ function SignInForm({ onSuccess }: { onSuccess: () => void }) {
   );
 }
 
-// --- Sign Up Form ---
+//Sign Up Form 
 function SignUpForm({ onSuccess }: { onSuccess: () => void }) {
   const { login } = useAuth();
   const [name, setName] = useState("");
@@ -278,7 +278,7 @@ function SignUpForm({ onSuccess }: { onSuccess: () => void }) {
   );
 }
 
-// --- Main Dialog connected with Context ---
+// Main Dialog connected with Context
 export function AuthDialog() {
   const { isOpen, closeDialog, activeTab, openDialog } = useAuthDialog();
 

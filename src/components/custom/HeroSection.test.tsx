@@ -34,7 +34,7 @@ class MockIntersectionObserver {
 }
 vi.stubGlobal("IntersectionObserver", MockIntersectionObserver);
 
-// --- Basic Render Test ---
+// Basic Render Test 
 describe("HeroSection Component", () => {
   beforeEach(() => {
     vi.clearAllMocks();

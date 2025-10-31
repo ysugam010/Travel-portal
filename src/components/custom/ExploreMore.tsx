@@ -4,7 +4,7 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Star, MapPin } from "lucide-react";
 
-// ---------- IMAGE IMPORTS ----------
+//IMAGE IMPORTS
 import amalfi from "@/assets/24.jpg";
 import tajmahal from "@/assets/25.jpg";
 import baliHotAir from "@/assets/26.jpg";
@@ -40,7 +40,7 @@ import mountCookCamp from "@/assets/51.jpg";
 import yosemiteCamp from "@/assets/52.jpg";
 import zionCamp from "@/assets/55.jpg";
 
-// ---------- DESTINATION DATA ----------
+//DESTINATION DATA
 const allDestinations = [
   { name: "Amalfi Coast", location: "Amalfi, Italy", price: 148, rating: 4.9, image: amalfi, category: "Popular" },
   { name: "Taj Mahal", location: "Agra, India", price: 140, rating: 4.9, image: tajmahal, category: "Popular" },
@@ -99,7 +99,7 @@ export function ExploreMore() {
   const [visibleItems, setVisibleItems] = useState(8);
   const [loadedImages, setLoadedImages] = useState<{ [key: string]: boolean }>({});
 
-  // 🔹 Preload all images on first render
+  // Preload all images on first render
   useEffect(() => {
     allDestinations.forEach((dest) => {
       const img = new Image();
@@ -191,7 +191,7 @@ export function ExploreMore() {
         ))}
       </div>
 
-      {/* SHOW MORE / LESS BUTTONS */}
+      {/* SHOW MORE AND LESS BUTTONS */}
       <div className="text-center flex justify-center gap-4">
         {visibleItems < filteredDestinations.length && (
           <Button

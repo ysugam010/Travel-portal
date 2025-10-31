@@ -17,7 +17,7 @@ beforeEach(() => {
   });
 });
 
-// --- Mock CurrencyContext globally ---
+// Mock CurrencyContext globally
 vi.mock("@/context/CurrencyContext", () => ({
   useCurrency: () => ({
     currency: "INR",
@@ -27,7 +27,7 @@ vi.mock("@/context/CurrencyContext", () => ({
   }),
 }));
 
-// --- Mock AuthContext (default: guest user) ---
+// Mock AuthContext (default: guest user)
 vi.mock("@/context/AuthContext", () => ({
   useAuth: () => ({
     user: null,
@@ -36,7 +36,7 @@ vi.mock("@/context/AuthContext", () => ({
   }),
 }));
 
-// --- Mock AuthDialogContext to prevent provider error ---
+//  Mock AuthDialogContext to prevent provider error
 vi.mock("@/context/AuthDialogContext", () => ({
   useAuthDialog: () => ({
     openDialog: vi.fn(),
@@ -45,7 +45,7 @@ vi.mock("@/context/AuthDialogContext", () => ({
   }),
 }));
 
-// --- Mock react-router-dom hooks (useNavigate, useLocation) ---
+// Mock react-router-dom hooks (useNavigate, useLocation) 
 vi.mock("react-router-dom", async () => {
   const actual = await vi.importActual("react-router-dom");
   return {
@@ -55,7 +55,7 @@ vi.mock("react-router-dom", async () => {
   };
 });
 
-// --- Import Navbar AFTER mocks ---
+// Import Navbar AFTER mocks
 import { Navbar } from "./Navbar";
 
 describe("Navbar Component", () => {

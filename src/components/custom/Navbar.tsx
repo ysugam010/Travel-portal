@@ -25,11 +25,11 @@ export function Navbar() {
   const { openDialog } = useAuthDialog();
   const location = useLocation();
 
-  // --- Detect if current route has a light background ---
+  // Detect if current route has a light background 
   const lightBackgroundRoutes = ["/ticket", "/explore", "/activity", "/hostelry-results","/flight-results","/package-results"];
   const isLightPage = lightBackgroundRoutes.includes(location.pathname);
 
-  // --- Dynamic color based on page type ---
+  //  Dynamic color based on page type
   const textColor = isLightPage ? "text-gray-800" : "text-white";
   const borderColor = isLightPage ? "border-gray-800" : "border-white";
 

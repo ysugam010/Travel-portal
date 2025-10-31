@@ -19,7 +19,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [user, setUser] = useState<User | null>(null);
   const { setCurrency } = useCurrency();
 
-  // ✅ Load user info from localStorage when app starts
+  // Load user info from localStorage when app starts
   useEffect(() => {
     const savedUser = localStorage.getItem("authUser");
     if (savedUser) {
@@ -27,7 +27,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     }
   }, []);
 
-  // ✅ Detect user location & set currency automatically
+  //  Detect user location & set currency automatically
   const detectUserCurrency = async () => {
     if (!navigator.geolocation) {
       console.warn("❌ Geolocation not supported by this browser.");
@@ -66,7 +66,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     );
   };
 
-  // ✅ Called after Sign In / Sign Up
+  // Called after Sign In / Sign Up
   const login = (userData: User) => {
     setUser(userData);
     localStorage.setItem("authUser", JSON.stringify(userData)); // persist user in localStorage
@@ -77,10 +77,10 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     }, 500);
   };
 
-  // ✅ Log out user & clear localStorage
+  //  Log out user & clear localStorage
   const logout = () => {
     setUser(null);
-    localStorage.removeItem("authUser"); // clear user data
+    localStorage.removeItem("authUser"); 
     localStorage.removeItem("currencyDetected");
   };
 
@@ -91,7 +91,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   );
 };
 
-// ✅ Hook for easier use in components
+//  Hook for easier use in components
 export const useAuth = () => {
   const context = useContext(AuthContext);
   if (!context) throw new Error("useAuth must be used within an AuthProvider");

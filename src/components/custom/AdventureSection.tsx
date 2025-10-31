@@ -9,17 +9,17 @@ import {
 import { Button } from "@/components/ui/button";
 import { Play, Plane} from "lucide-react";
 
-// --- Import your adventure images and video ---
+//Import your adventure images and video
 import parisImg from '@/assets/61.jpg';
 import newYorkImg from '@/assets/64.jpg';
 import seoulImg from '@/assets/63.jpg';
 import baliTempleImg from '@/assets/66.jpg';
-import romeImg from '@/assets/65.jpg'; // Added new image
-import sydneyImg from '@/assets/62.jpg'; // Added new image
+import romeImg from '@/assets/65.jpg';
+import sydneyImg from '@/assets/62.jpg'; 
 import travelVideo from '@/assets/videos/travel-video.mp4';
-import { CurrencyProvider } from "@/context/CurrencyContext";
 
-// --- Added more destinations for a better slider experience ---
+
+//Added more destinations for a better slider experience 
 const adventures = [
   { name: "Paris", image: parisImg },
   { name: "New York", image: newYorkImg },
@@ -48,7 +48,7 @@ export function AdventureSection() {
   return (
     <section className="bg-white py-24 px-4">
       <div className="container mx-auto">
-        {/* === Top Part: Adventure Carousel === */}
+        {/*Top Part: Adventure Carousel*/}
         <div className="text-center mb-12">
           <h2 className="text-3xl md:text-4xl font-bold">Let's go on an adventure</h2>
           <p className="text-gray-500 mt-2">Find and book a great experience.</p>
@@ -88,7 +88,7 @@ export function AdventureSection() {
           </div>
         </Carousel>
 
-        {/* === Bottom Part: Video Section === */}
+        {/*Bottom Part:Video Section*/}
        <div className="mt-24 flex flex-col items-center gap-12">
   <div className="text-center lg:text-center max-w-2xl">
     <h2 className="text-3xl md:text-4xl font-bold leading-tight">Book tickets and go now!</h2>
